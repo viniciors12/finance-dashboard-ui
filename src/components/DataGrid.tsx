@@ -1,9 +1,9 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
 import type { ColDef, GridApi } from "ag-grid-community";
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
-import { Transaction } from "models/Transaction";
-import { GetAllTransactions } from "services/TransactionService";
+import { type Transaction } from "@models";
+import { useTransactionsContext } from "context/TransactionsContext";
 
 // Register the module
 ModuleRegistry.registerModules([
@@ -11,7 +11,7 @@ ModuleRegistry.registerModules([
 ]);
 
 export const DataGrid = () => {
-  const [rowData, setRowData] = useState<Transaction[]>([]);
+  const { transactions, loading } = useTransactionsContext();
   const gridRef = useRef<GridApi | null>(null);
 
   const columnDefs = useMemo<ColDef<Transaction>[]>(
@@ -43,19 +43,14 @@ export const DataGrid = () => {
     []
   );
 
-  useEffect(() => {
-    GetAllTransactions()
-      .then((response) => setRowData(response))
-      .catch((err) => console.log(err));
-  }, []);
-
   return (
     <div className="ag-theme-alpine" style={{ height: 400, width: "100%" }}>
       <AgGridReact
-        rowData={rowData}
+        rowData={transactions}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
         onGridReady={(params) => (gridRef.current = params.api)}
+        loading={loading}
       />
     </div>
   );

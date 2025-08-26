@@ -19,7 +19,9 @@
       "@components": ["components/index"],
       "@components/*": ["components/*"],
       "@modules": ["modules/index"],
-      "@modules/*": ["modules/*"]
+      "@modules/*": ["modules/*"],
+      "@models": ["models/index"],
+      "@models/*": ["models/*"]
     },
 
     /* Linting */

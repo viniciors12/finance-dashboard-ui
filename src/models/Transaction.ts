@@ -1,16 +1,16 @@
-export class Transaction {
+export const TransactionType = {
+  Income: 1,
+  Expense: 2,
+};
+
+export type TransactionType =
+  (typeof TransactionType)[keyof typeof TransactionType];
+
+export interface Transaction {
   transactionId?: number;
-  type?: number;
+  type?: TransactionType;
   category?: string;
   description?: string;
   amount?: number;
   date?: Date;
-  constructor(transaction?: Transaction) {
-    this.transactionId = transaction?.transactionId;
-    this.type = transaction?.type;
-    this.category = transaction?.category;
-    this.description = transaction?.description;
-    this.amount = transaction?.amount;
-    this.date = transaction?.date;
-  }
 }
