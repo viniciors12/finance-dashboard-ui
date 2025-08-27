@@ -10,14 +10,8 @@ const formReducer = <T>(state: T, action: FormAction<T>): T => ({
   [action.field]: action.value,
 });
 
-export const useFormReducer = <T>() => {
-  const [form, dispatch] = useReducer(formReducer, {
-    type: 0,
-    category: "",
-    description: "",
-    amount: 0,
-    date: new Date(),
-  } as T);
+export const useFormReducer = <T>(initialState: T) => {
+  const [form, dispatch] = useReducer(formReducer<T>, initialState);
 
   const onValueChanged = useCallback(
     <K extends keyof T>(key: K) => {

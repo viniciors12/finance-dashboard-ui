@@ -1,14 +1,31 @@
 import { Grid } from "@mui/material";
 import { BalanceCard } from "@modules";
+import { useTransactionsContext } from "context/TransactionsContext";
+import { useMemo } from "react";
+import { TransactionType } from "@models";
 
 export const DisplayBalances = ({}) => {
+  const { transactions } = useTransactionsContext();
+
+  const income = useMemo(() => {
+    return Array.from(transactions.values())
+      .filter((tx) => tx.type === TransactionType.Income)
+      .reduce((sum, tx) => sum + (tx?.amount ?? 0), 0);
+  }, [transactions]);
+
+  const expenses = useMemo(() => {
+    return Array.from(transactions.values())
+      .filter((tx) => tx.type === TransactionType.Expense)
+      .reduce((sum, tx) => sum + (tx?.amount ?? 0), 0);
+  }, [transactions]);
+
   return (
     <Grid container spacing={2}>
       <Grid size={{ xs: 12, md: 6 }}>
-        <BalanceCard amount={500} label="Income" />
+        <BalanceCard amount={income} label="Income" />
       </Grid>
       <Grid size={{ xs: 12, md: 6 }}>
-        <BalanceCard amount={200} label="Expenses" />
+        <BalanceCard amount={expenses} label="Expenses" />
       </Grid>
     </Grid>
   );
