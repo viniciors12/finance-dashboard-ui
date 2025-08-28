@@ -1,14 +1,25 @@
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { MonthRangeSelector } from "@components";
+import { SelectorField } from "@components";
+import { TransactionType, type ChartFilterRequest } from "@models";
+import { FormControl, Stack, Typography } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
+import { categories } from "constants/Constants";
+import dayjs, { Dayjs } from "dayjs";
 
-export const ChartFilters = () => {
+type props = {
+  onValueChanged: <K extends keyof ChartFilterRequest>(
+    key: K
+  ) => (newValue?: ChartFilterRequest[K] | undefined) => void;
+  form: ChartFilterRequest;
+};
+export const ChartFilters = ({ onValueChanged, form }: props) => {
+  const getCategories = () => {
+    const categoryOptions = categories[TransactionType.Expense].map((cat) => ({
+      key: cat,
+      value: cat,
+    }));
+    return [{ key: "All", value: "All" }, ...categoryOptions];
+  };
+
   return (
     <FormControl
       fullWidth
@@ -27,21 +38,29 @@ export const ChartFilters = () => {
         direction="column"
         spacing={3}
       >
-        <FormControl fullWidth size="small">
-          <InputLabel id="category-label">Category</InputLabel>
-          <Select
-            labelId="category-label"
-            //value={category}
-            label="Category"
-            //onChange={(e) => setCategory(e.target.value)}
-          >
-            <MenuItem value="">All</MenuItem>
-            <MenuItem value="income">Income</MenuItem>
-            <MenuItem value="expenses">Expenses</MenuItem>
-            <MenuItem value="savings">Savings</MenuItem>
-          </Select>
-        </FormControl>
-        <MonthRangeSelector />
+        <SelectorField
+          label="Category"
+          field="category"
+          form={form}
+          onValueChanged={onValueChanged}
+          options={getCategories()}
+        />
+        <Stack spacing={2} direction="row">
+          <DatePicker
+            label="From"
+            value={dayjs(form.fromDate)}
+            onChange={(newValue: Dayjs | null) =>
+              onValueChanged("fromDate")(newValue?.toDate())
+            }
+          />
+          <DatePicker
+            label="To"
+            value={dayjs(form.toDate)}
+            onChange={(newValue: Dayjs | null) =>
+              onValueChanged("toDate")(newValue?.toDate())
+            }
+          />
+        </Stack>
       </Stack>
     </FormControl>
   );

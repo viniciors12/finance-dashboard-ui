@@ -1,8 +1,10 @@
+import type { ChartFilterRequest, ChartFilterResponse } from "@models";
 import type { Transaction } from "models/Transaction";
 import { createContext, useContext, useEffect, useState } from "react";
 import {
   AddTransaction,
   GetAllTransactions,
+  GetFilteredTransactions,
 } from "services/TransactionService";
 
 interface TransactionsContextType {
@@ -11,6 +13,9 @@ interface TransactionsContextType {
   error: string | null;
   refresh: () => void;
   addTransaction: (data: Omit<Transaction, "id">) => Promise<void>;
+  fetchFilteredTransactions: (
+    filter: ChartFilterRequest
+  ) => Promise<ChartFilterResponse[] | undefined>;
 }
 
 const TransactionsContext = createContext<TransactionsContextType | undefined>(
@@ -40,6 +45,17 @@ export const TransactionsProvider = ({
     }
   };
 
+  const fetchFilteredTransactions = async (filter: ChartFilterRequest) => {
+    setLoading(true);
+    try {
+      return await GetFilteredTransactions(filter);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const addTransaction = async (data: Omit<Transaction, "id">) => {
     const transactions = await AddTransaction(data);
     setTransactions([...transactions]);
@@ -57,6 +73,7 @@ export const TransactionsProvider = ({
         error,
         refresh: fetchTransactions,
         addTransaction,
+        fetchFilteredTransactions,
       }}
     >
       {children}

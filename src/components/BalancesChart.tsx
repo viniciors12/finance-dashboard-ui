@@ -1,22 +1,47 @@
+import type { ChartFilterResponse } from "@models";
 import { Box, Typography } from "@mui/material";
-import { ResponsiveBar } from "@nivo/bar";
+import { ResponsiveBar, type ComputedDatum } from "@nivo/bar";
 
-export const BalancesChart = () => {
-  const data = [
-    { month: "Jan", income: 4000, expenses: 2500 },
-    { month: "Feb", income: 3000, expenses: 2800 },
-    { month: "Mar", income: 5000, expenses: 3200 },
-  ];
+type props = {
+  chartData: ChartFilterResponse[];
+};
+
+export const BalancesChart = ({ chartData }: props) => {
+  const getBarColor = (datum: ComputedDatum<ChartFilterResponse>) => {
+    switch (datum.id) {
+      case "income":
+        return "#81c784";
+      case "expense":
+        return "#ef9a9a";
+      case "net":
+        return "#90caf9";
+      default:
+        return "#757575";
+    }
+  };
+
+  const getLabel = (id: string | number) => {
+    switch (id) {
+      case "income":
+        return "Income";
+      case "expense":
+        return "Expenses";
+      case "net":
+        return "Net";
+      default:
+        return "";
+    }
+  };
   return (
     <Box style={{ height: 400 }}>
       <ResponsiveBar
-        data={data}
-        keys={["income", "expenses"]}
+        data={chartData as readonly ChartFilterResponse[]}
+        keys={["income", "expense", "net"]}
         indexBy="month"
         groupMode="grouped"
         margin={{ top: 20, right: 130, bottom: 50, left: 40 }}
         padding={0.3}
-        colors={{ scheme: "category10" }}
+        colors={getBarColor}
         labelSkipWidth={999}
         labelSkipHeight={999}
         legends={[]}
@@ -39,7 +64,7 @@ export const BalancesChart = () => {
               {indexValue}
             </Typography>
             <Typography variant="body2" fontWeight={600} color={color}>
-              {id === "income" ? "Income" : "Expenses"}: ${value}
+              {getLabel(id)}: ${value}
             </Typography>
           </Box>
         )}

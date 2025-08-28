@@ -1,14 +1,18 @@
 import { useMemo, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
-import type { ColDef, GridApi } from "ag-grid-community";
+import type {
+  ColDef,
+  GridApi,
+  ICellRendererParams,
+  ValueFormatterParams,
+} from "ag-grid-community";
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
-import { type Transaction } from "@models";
+import { TransactionType, type Transaction } from "@models";
 import { useTransactionsContext } from "context/TransactionsContext";
+import { Stack, Typography } from "@mui/material";
 
 // Register the module
-ModuleRegistry.registerModules([
-  AllCommunityModule, // or AllEnterpriseModule
-]);
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const DataGrid = () => {
   const { transactions, loading } = useTransactionsContext();
@@ -16,7 +20,20 @@ export const DataGrid = () => {
 
   const columnDefs = useMemo<ColDef<Transaction>[]>(
     () => [
-      { headerName: "Date", field: "date", sortable: true, filter: true },
+      {
+        headerName: "Date",
+        field: "date",
+        valueFormatter: (params: ValueFormatterParams) => {
+          const date = new Date(params.data.date);
+          return date.toLocaleDateString("es-CR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          });
+        },
+        sortable: true,
+        filter: true,
+      },
       {
         headerName: "Description",
         field: "description",
@@ -29,7 +46,26 @@ export const DataGrid = () => {
         sortable: true,
         filter: true,
       },
-      { headerName: "Amount", field: "amount", sortable: true, filter: true },
+      {
+        headerName: "Amount",
+        field: "amount",
+        cellRenderer: (params: ICellRendererParams) => {
+          const type = params.data.type;
+          const isIncome = TransactionType.Income == type;
+          return (
+            <Stack direction="row" alignItems="center" sx={{ height: "100%" }}>
+              <Typography
+                variant="body2"
+                color={isIncome ? "#2e7d32" : "#c62828"}
+              >
+                {isIncome ? "" : "-"}${params.data.amount}
+              </Typography>
+            </Stack>
+          );
+        },
+        sortable: true,
+        filter: true,
+      },
     ],
     []
   );
