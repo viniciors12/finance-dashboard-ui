@@ -1,21 +1,18 @@
 import { useMemo, useRef } from "react";
-import { AgGridReact } from "ag-grid-react";
-import type {
-  ColDef,
-  GridApi,
-  ICellRendererParams,
-  ValueFormatterParams,
-} from "ag-grid-community";
+import { AgGridReact, type CustomCellRendererProps } from "ag-grid-react";
+import type { ColDef, GridApi, ValueFormatterParams } from "ag-grid-community";
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 import { TransactionType, type Transaction } from "@models";
 import { useTransactionsContext } from "context/TransactionsContext";
-import { Stack, Typography } from "@mui/material";
+import { IconButton, Stack, Typography } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 // Register the module
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const DataGrid = () => {
-  const { transactions, loading } = useTransactionsContext();
+  const { transactions, onDeleteTransaction, loading } =
+    useTransactionsContext();
   const gridRef = useRef<GridApi | null>(null);
 
   const columnDefs = useMemo<ColDef<Transaction>[]>(
@@ -49,8 +46,8 @@ export const DataGrid = () => {
       {
         headerName: "Amount",
         field: "amount",
-        cellRenderer: (params: ICellRendererParams) => {
-          const type = params.data.type;
+        cellRenderer: (params: CustomCellRendererProps<Transaction>) => {
+          const type = params.data?.type;
           const isIncome = TransactionType.Income == type;
           return (
             <Stack direction="row" alignItems="center" sx={{ height: "100%" }}>
@@ -58,13 +55,30 @@ export const DataGrid = () => {
                 variant="body2"
                 color={isIncome ? "#2e7d32" : "#c62828"}
               >
-                {isIncome ? "" : "-"}${params.data.amount}
+                {isIncome ? "" : "-"}${params.data?.amount}
               </Typography>
             </Stack>
           );
         },
         sortable: true,
         filter: true,
+      },
+      {
+        colId: "actions",
+        maxWidth: 80,
+        resizable: false,
+        cellRenderer: ({ data }: CustomCellRendererProps<Transaction>) => {
+          return (
+            <IconButton
+              size="small"
+              onClick={() =>
+                data?.transactionId && onDeleteTransaction(data?.transactionId)
+              }
+            >
+              <DeleteIcon />
+            </IconButton>
+          );
+        },
       },
     ],
     []

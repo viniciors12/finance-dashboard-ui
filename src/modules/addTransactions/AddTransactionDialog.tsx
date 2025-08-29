@@ -25,7 +25,7 @@ export const AddTransactionDialog = ({
   open: boolean;
   onClose: () => void;
 }) => {
-  const { addTransaction } = useTransactionsContext();
+  const { onAddTransaction } = useTransactionsContext();
   const { form, onValueChanged } = useFormReducer<Transaction>({
     type: 1,
     category: "",
@@ -45,8 +45,8 @@ export const AddTransactionDialog = ({
     }));
   }, [form.type]);
 
-  const handleSubmit = async () => {
-    await addTransaction(form);
+  const onHandleSubmit = async () => {
+    await onAddTransaction(form);
     onClose();
   };
 
@@ -122,7 +122,7 @@ export const AddTransactionDialog = ({
           />
 
           <Stack direction="row" justifyContent="flex-end">
-            <Button variant="contained" onClick={handleSubmit}>
+            <Button variant="contained" onClick={onHandleSubmit}>
               Add
             </Button>
           </Stack>

@@ -3,20 +3,17 @@ import { BalanceCard } from "@modules";
 import { useTransactionsContext } from "context/TransactionsContext";
 import { useMemo } from "react";
 import { TransactionType } from "@models";
+import { calculateTransaction } from "utils/BalancesUtiles";
 
 export const DisplayBalances = ({}) => {
   const { transactions } = useTransactionsContext();
 
   const income = useMemo(() => {
-    return Array.from(transactions.values())
-      .filter((tx) => tx.type === TransactionType.Income)
-      .reduce((sum, tx) => sum + (tx?.amount ?? 0), 0);
+    return calculateTransaction(transactions, TransactionType.Income);
   }, [transactions]);
 
   const expenses = useMemo(() => {
-    return Array.from(transactions.values())
-      .filter((tx) => tx.type === TransactionType.Expense)
-      .reduce((sum, tx) => sum + (tx?.amount ?? 0), 0);
+    return calculateTransaction(transactions, TransactionType.Expense);
   }, [transactions]);
 
   const net = useMemo(() => {
@@ -32,7 +29,7 @@ export const DisplayBalances = ({}) => {
         <BalanceCard amount={expenses} label="Expenses" />
       </Grid>
       <Grid size={{ xs: 12, md: 4 }}>
-        <BalanceCard amount={net} label="Net" />
+        <BalanceCard amount={net} label="Savings" />
       </Grid>
     </Grid>
   );

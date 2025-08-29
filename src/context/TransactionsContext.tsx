@@ -3,6 +3,7 @@ import type { Transaction } from "models/Transaction";
 import { createContext, useContext, useEffect, useState } from "react";
 import {
   AddTransaction,
+  DeleteTransaction,
   GetAllTransactions,
   GetFilteredTransactions,
 } from "services/TransactionService";
@@ -12,10 +13,11 @@ interface TransactionsContextType {
   loading: boolean;
   error: string | null;
   refresh: () => void;
-  addTransaction: (data: Omit<Transaction, "id">) => Promise<void>;
+  onAddTransaction: (data: Omit<Transaction, "id">) => Promise<void>;
   fetchFilteredTransactions: (
     filter: ChartFilterRequest
   ) => Promise<ChartFilterResponse[] | undefined>;
+  onDeleteTransaction: (transactionId: number) => Promise<void>;
 }
 
 const TransactionsContext = createContext<TransactionsContextType | undefined>(
@@ -56,9 +58,14 @@ export const TransactionsProvider = ({
     }
   };
 
-  const addTransaction = async (data: Omit<Transaction, "id">) => {
+  const onAddTransaction = async (data: Omit<Transaction, "id">) => {
     const transactions = await AddTransaction(data);
     setTransactions([...transactions]);
+  };
+
+  const onDeleteTransaction = async (transactionId: number) => {
+    const transaction = await DeleteTransaction(transactionId);
+    setTransactions([...transaction]);
   };
 
   useEffect(() => {
@@ -72,8 +79,9 @@ export const TransactionsProvider = ({
         loading,
         error,
         refresh: fetchTransactions,
-        addTransaction,
+        onAddTransaction,
         fetchFilteredTransactions,
+        onDeleteTransaction,
       }}
     >
       {children}

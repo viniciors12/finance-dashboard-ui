@@ -27,7 +27,7 @@ export const BalancesChart = ({ chartData }: props) => {
       case "expense":
         return "Expenses";
       case "net":
-        return "Net";
+        return "Savings";
       default:
         return "";
     }

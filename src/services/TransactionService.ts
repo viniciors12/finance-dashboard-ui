@@ -21,3 +21,9 @@ export const GetFilteredTransactions = async (
     transaction
   );
 };
+
+export const DeleteTransaction = async (
+  transactionId: number
+): Promise<Transaction[]> => {
+  return ApiService.delete(`${baseUrl}transactions/${transactionId}`);
+};

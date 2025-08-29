@@ -12,7 +12,7 @@ export const BalanceCard = ({ amount, label }: props) => {
         <Typography variant="body1" color="text.primary">
           $ {label}
         </Typography>
-        <Typography variant="h5" component="div">
+        <Typography fontWeight="bold" variant="h5" component="div">
           $ {amount}
         </Typography>
       </CardContent>

@@ -1,7 +1,7 @@
 import { Card, Grid, Typography } from "@mui/material";
 import { ChartFilters } from "@modules";
 import { BalancesChart } from "@components";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTransactionsContext } from "context/TransactionsContext";
 import { useFormReducer } from "hooks/FormReducer";
 import type { ChartFilterRequest, ChartFilterResponse } from "@models";
@@ -9,21 +9,19 @@ import dayjs from "dayjs";
 
 export const DisplayChart = () => {
   const { fetchFilteredTransactions } = useTransactionsContext();
-  const { form, onValueChanged } = useFormReducer<ChartFilterRequest>({
-    fromDate: dayjs().startOf("month").toDate(),
-    toDate: dayjs().endOf("month").toDate(),
-    category: "All",
-  });
+  const { form, onValueChanged, hasChanged } =
+    useFormReducer<ChartFilterRequest>({
+      fromDate: dayjs().startOf("month").toDate(),
+      toDate: dayjs().endOf("month").toDate(),
+      category: "All",
+    });
   const [chartData, setChartData] = useState<ChartFilterResponse[]>([]);
-  const hasMounted = useRef(false);
 
   useEffect(() => {
-    if (!hasMounted.current) {
-      hasMounted.current = true;
-      return;
+    if (hasChanged) {
+      fetchFilteredTransactions(form).then((data) => setChartData(data ?? []));
     }
-    fetchFilteredTransactions(form).then((data) => setChartData(data ?? []));
-  }, [form, fetchFilteredTransactions]);
+  }, [form, hasChanged]);
   return (
     <Card>
       <Grid container spacing={2} sx={{ padding: 2 }}>
