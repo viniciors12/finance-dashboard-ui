@@ -4,7 +4,7 @@ import type { ChartFilterResponse } from "@models";
 
 const baseUrl = "https://i8vvaycq2f.execute-api.us-east-2.amazonaws.com/";
 export const GetAllTransactions = async (): Promise<Transaction[]> => {
-  return ApiService.get(`${baseUrl}transactions/`);
+  return ApiService.get(`${baseUrl}transactions`);
 };
 
 export const AddTransaction = async (
