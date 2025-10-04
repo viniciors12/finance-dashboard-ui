@@ -20,8 +20,10 @@
     "ag-grid-community": "^34.1.2",
     "ag-grid-react": "^34.1.2",
     "dayjs": "^1.11.13",
+    "picomatch": "4.0.3",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "yaml": "2.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
