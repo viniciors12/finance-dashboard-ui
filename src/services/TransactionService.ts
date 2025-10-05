@@ -10,7 +10,7 @@ export const GetAllTransactions = async (): Promise<Transaction[]> => {
 export const AddTransaction = async (
   transaction: Transaction
 ): Promise<Transaction[]> => {
-  return ApiService.post(`${baseUrl}transactions/`, transaction);
+  return ApiService.post(`${baseUrl}transactions`, transaction);
 };
 
 export const GetFilteredTransactions = async (
