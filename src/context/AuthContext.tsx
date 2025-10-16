@@ -26,12 +26,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserCredentials | undefined>();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const login = useCallback(async (username: string, password: string) => {
     try {
       setLoading(true);
-      setError(null);
       const { isSignedIn } = await signIn({ username, password });
       if (isSignedIn) {
         const currentUser = await getCurrentUser();
@@ -41,7 +39,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         });
       }
     } catch (err: any) {
-      setError(err.message || "Login failed");
+      //TODO: Proper Error handling
     } finally {
       setLoading(false);
     }
