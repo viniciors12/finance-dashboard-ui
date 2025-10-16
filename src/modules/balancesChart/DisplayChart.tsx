@@ -1,38 +1,32 @@
 import { Card, Grid, Typography } from "@mui/material";
 import { ChartFilters } from "@modules";
 import { BalancesChart } from "@components";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useTransactionsContext } from "context/TransactionsContext";
 import { useFormReducer } from "hooks/FormReducer";
-import type { ChartFilterRequest, ChartFilterResponse } from "@models";
-import dayjs from "dayjs";
-const initialState: ChartFilterRequest = {
-  fromDate: dayjs().startOf("month").toDate(),
-  toDate: dayjs().endOf("month").toDate(),
-  category: "All",
-};
+import { chartFilterInitialState, type ChartFilterRequest } from "@models";
 
 export const DisplayChart = () => {
-  const { fetchFilteredTransactions } = useTransactionsContext();
+  const { fetchFilteredTransactions, chartData } = useTransactionsContext();
   const { form, onValueChanged, hasChanged } =
-    useFormReducer<ChartFilterRequest>(initialState);
-  const [chartData, setChartData] = useState<ChartFilterResponse[]>([]);
+    useFormReducer<ChartFilterRequest>(chartFilterInitialState);
 
   useEffect(() => {
-    const isInitialState = JSON.stringify(form) == JSON.stringify(initialState);
+    const isInitialState =
+      JSON.stringify(form) == JSON.stringify(chartFilterInitialState);
 
     if (hasChanged || isInitialState) {
-      fetchFilteredTransactions(form).then((data) => setChartData(data ?? []));
+      fetchFilteredTransactions(form);
     }
   }, [form, hasChanged]);
   return (
     <Card>
-      <Grid container spacing={2} sx={{ padding: 2 }}>
+      <Grid container sx={{ padding: 2 }}>
         <Grid size={{ xs: 12, md: 8 }}>
           <Typography variant="body1" color="text.primary">
             Income vs. Expenses
           </Typography>
-          <BalancesChart chartData={chartData} />
+          <BalancesChart chartData={chartData ?? []} />
         </Grid>
         <Grid size={{ xs: 12, md: 4 }}>
           <ChartFilters onValueChanged={onValueChanged} form={form} />

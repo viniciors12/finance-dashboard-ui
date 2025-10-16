@@ -3,7 +3,7 @@ type SelectFieldProps<T, K extends keyof T> = {
   label: string;
   field: K;
   form: T;
-  onValueChanged: (key: K) => (value: T[K]) => void;
+  onValueChanged: (key: keyof T, value: T[keyof T]) => void;
   options: { key: string | number; value: string }[];
 };
 
@@ -20,7 +20,7 @@ export const SelectorField = <T, K extends keyof T>({
       <Select
         labelId={`${field.toString()}-label`}
         value={form[field]}
-        onChange={(e) => onValueChanged(field)(e.target.value as T[K])}
+        onChange={(e) => onValueChanged(field, e.target.value as T[keyof T])}
         label={label}
       >
         {options.map((opt) => (

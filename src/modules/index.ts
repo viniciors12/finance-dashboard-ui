@@ -4,3 +4,4 @@ export * from "./totalBalances/balances/BalanceCard";
 export * from "./balancesChart/ChartFilters";
 export * from "./balancesChart/DisplayChart";
 export * from "./addTransactions/AddTransactionDialog";
+export * from "./FinanceDashboard";

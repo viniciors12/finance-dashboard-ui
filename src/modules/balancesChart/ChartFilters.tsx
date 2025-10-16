@@ -6,9 +6,10 @@ import { categories } from "constants/Constants";
 import dayjs, { Dayjs } from "dayjs";
 
 type props = {
-  onValueChanged: <K extends keyof ChartFilterRequest>(
-    key: K
-  ) => (newValue?: ChartFilterRequest[K] | undefined) => void;
+  onValueChanged: (
+    key: keyof ChartFilterRequest,
+    value: string | Date | undefined
+  ) => void;
   form: ChartFilterRequest;
 };
 export const ChartFilters = ({ onValueChanged, form }: props) => {
@@ -50,14 +51,14 @@ export const ChartFilters = ({ onValueChanged, form }: props) => {
             label="From"
             value={dayjs(form.fromDate)}
             onChange={(newValue: Dayjs | null) =>
-              onValueChanged("fromDate")(newValue?.toDate())
+              onValueChanged("fromDate", newValue?.toDate())
             }
           />
           <DatePicker
             label="To"
             value={dayjs(form.toDate)}
             onChange={(newValue: Dayjs | null) =>
-              onValueChanged("toDate")(newValue?.toDate())
+              onValueChanged("toDate", newValue?.toDate())
             }
           />
         </Stack>

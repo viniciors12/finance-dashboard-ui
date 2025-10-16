@@ -39,7 +39,7 @@ export const BalancesChart = ({ chartData }: props) => {
         keys={["income", "expense", "net"]}
         indexBy="month"
         groupMode="grouped"
-        margin={{ top: 20, right: 130, bottom: 50, left: 40 }}
+        margin={{ top: 20, right: 50, bottom: 50, left: 40 }}
         padding={0.3}
         colors={getBarColor}
         labelSkipWidth={999}
@@ -64,7 +64,7 @@ export const BalancesChart = ({ chartData }: props) => {
               {indexValue}
             </Typography>
             <Typography variant="body2" fontWeight={600} color={color}>
-              {getLabel(id)}: ${value}
+              {getLabel(id)}: ₡{value}
             </Typography>
           </Box>
         )}

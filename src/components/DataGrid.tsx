@@ -2,7 +2,11 @@ import { useMemo, useRef } from "react";
 import { AgGridReact, type CustomCellRendererProps } from "ag-grid-react";
 import type { ColDef, GridApi, ValueFormatterParams } from "ag-grid-community";
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
-import { TransactionType, type Transaction } from "@models";
+import {
+  chartFilterInitialState,
+  TransactionType,
+  type Transaction,
+} from "@models";
 import { useTransactionsContext } from "context/TransactionsContext";
 import { IconButton, Stack, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -11,7 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const DataGrid = () => {
-  const { transactions, onDeleteTransaction, loading } =
+  const { transactions, onDeleteTransaction, fetchFilteredTransactions } =
     useTransactionsContext();
   const gridRef = useRef<GridApi | null>(null);
 
@@ -55,7 +59,7 @@ export const DataGrid = () => {
                 variant="body2"
                 color={isIncome ? "#2e7d32" : "#c62828"}
               >
-                {isIncome ? "" : "-"}${params.data?.amount}
+                {isIncome ? "" : "-"}₡{params.data?.amount}
               </Typography>
             </Stack>
           );
@@ -71,9 +75,12 @@ export const DataGrid = () => {
           return (
             <IconButton
               size="small"
-              onClick={() =>
-                data?.transactionId && onDeleteTransaction(data?.transactionId)
-              }
+              onClick={async () => {
+                if (data?.transactionId) {
+                  await onDeleteTransaction(data?.transactionId);
+                  await fetchFilteredTransactions(chartFilterInitialState);
+                }
+              }}
             >
               <DeleteIcon />
             </IconButton>
@@ -100,7 +107,7 @@ export const DataGrid = () => {
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
         onGridReady={(params) => (gridRef.current = params.api)}
-        loading={loading}
+        //loading={loading}
       />
     </div>
   );

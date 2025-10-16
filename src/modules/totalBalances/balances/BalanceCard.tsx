@@ -10,10 +10,10 @@ export const BalanceCard = ({ amount, label }: props) => {
     <Card>
       <CardContent sx={{ height: "100%" }}>
         <Typography variant="body1" color="text.primary">
-          $ {label}
+          ₡ {label}
         </Typography>
         <Typography fontWeight="bold" variant="h5" component="div">
-          $ {amount}
+          ₡ {amount}
         </Typography>
       </CardContent>
     </Card>

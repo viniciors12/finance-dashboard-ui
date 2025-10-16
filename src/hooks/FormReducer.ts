@@ -1,14 +1,15 @@
-import { useCallback, useReducer, useRef } from "react";
+import { useReducer, useRef } from "react";
 
-type FormAction<T> = {
-  field: keyof T;
-  value: any;
+const reducer = <T>(state: T, action: any): T => {
+  switch (action.type) {
+    case "UPDATE_FIELD":
+      return { ...state, [action.key]: action.value };
+    case "RESET_FORM":
+      return action.payload;
+    default:
+      return state;
+  }
 };
-
-const formReducer = <T>(state: T, action: FormAction<T>): T => ({
-  ...state,
-  [action.field]: action.value,
-});
 
 const shallowEqual = <T>(a: T, b: T): boolean => {
   const keysA = Object.keys(a as object) as (keyof T)[];
@@ -28,18 +29,18 @@ const shallowEqual = <T>(a: T, b: T): boolean => {
 };
 
 export const useFormReducer = <T>(initialState: T) => {
-  const [form, dispatch] = useReducer(formReducer<T>, initialState);
+  const [form, dispatch] = useReducer(reducer<T>, initialState);
   const initialRef = useRef<T>(initialState);
 
-  const onValueChanged = useCallback(
-    <K extends keyof T>(key: K) => {
-      return (newValue?: T[K]) => {
-        dispatch({ field: key, value: newValue });
-      };
-    },
-    [dispatch]
-  );
+  const onValueChanged = (key: keyof T, value: T[keyof T]) => {
+    dispatch({ type: "UPDATE_FIELD", key, value });
+  };
+
+  const resetForm = () => {
+    dispatch({ type: "RESET_FORM", payload: initialState });
+  };
+
   const hasChanged = !shallowEqual(form, initialRef.current);
 
-  return { form, onValueChanged, hasChanged };
+  return { form, onValueChanged, resetForm, hasChanged };
 };
