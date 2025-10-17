@@ -1,20 +1,32 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Stack, Typography } from "@mui/material";
 
 type props = {
-  amount: number;
+  amount: string;
   label: string;
+  icon: React.ReactNode;
+  color: string;
 };
 
-export const BalanceCard = ({ amount, label }: props) => {
+export const BalanceCard = ({ amount, label, icon, color }: props) => {
   return (
     <Card>
       <CardContent sx={{ height: "100%" }}>
-        <Typography variant="body1" color="text.primary">
-          ₡ {label}
-        </Typography>
-        <Typography fontWeight="bold" variant="h5" component="div">
-          ₡ {amount}
-        </Typography>
+        <Stack spacing={1} direction="row">
+          {icon}
+          <Stack direction="column">
+            <Typography variant="body1" color="text.primary">
+              {label}
+            </Typography>
+            <Typography
+              color={color}
+              fontWeight="bold"
+              variant="h5"
+              component="div"
+            >
+              {amount}
+            </Typography>
+          </Stack>
+        </Stack>
       </CardContent>
     </Card>
   );

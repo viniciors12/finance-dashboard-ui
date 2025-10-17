@@ -85,7 +85,9 @@ export const TransactionsProvider = ({
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchTransactions();
+    setLoading(false);
   }, []);
 
   return (
