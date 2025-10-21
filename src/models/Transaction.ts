@@ -1,6 +1,7 @@
 export const TransactionType = {
   Income: 1,
   Expense: 2,
+  Savings: 3,
 };
 
 export type TransactionType =

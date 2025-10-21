@@ -23,9 +23,11 @@ export const categories = {
     "Subscriptions",
     "Dining Out",
   ],
+  [TransactionType.Savings]: ["Savings"],
 };
 
 export const types: keyValuePair[] = [
   { key: 1, value: "Income" },
   { key: 2, value: "Expenses" },
+  { key: 3, value: "Savings" },
 ];

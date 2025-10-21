@@ -18,9 +18,9 @@ import { useTransactionsContext } from "context/TransactionsContext";
 import { useFormReducer } from "hooks/FormReducer";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-import { categories, types } from "constants/Constants";
+import { types } from "constants/Constants";
 import { SelectorField } from "@components";
-import { useMemo } from "react";
+import { TransactionsDialogValidations } from "./TransactionsDialogValidations";
 
 const transactionInitialState: Transaction = {
   type: 1,
@@ -41,17 +41,11 @@ export const AddTransactionDialog = ({
   const { form, onValueChanged, resetForm } = useFormReducer<Transaction>(
     transactionInitialState
   );
-
-  const categoryOptions = useMemo(() => {
-    return categories[
-      form.type === TransactionType.Income
-        ? TransactionType.Income
-        : TransactionType.Expense
-    ].map((cat) => ({
-      key: cat,
-      value: cat,
-    }));
-  }, [form.type]);
+  const { categoryOptions, amountHelperText, isInvalidAmount } =
+    TransactionsDialogValidations({
+      form,
+      onValueChanged,
+    });
 
   const onHandleSubmit = async () => {
     await onAddTransaction(form);
@@ -104,6 +98,7 @@ export const AddTransactionDialog = ({
             form={form}
             onValueChanged={onValueChanged}
             options={categoryOptions}
+            disabled={form.type == TransactionType.Savings}
           />
 
           <TextField
@@ -120,6 +115,8 @@ export const AddTransactionDialog = ({
             onChange={(e) => onValueChanged("amount", Number(e.target.value))}
             fullWidth
             size="medium"
+            error={isInvalidAmount}
+            helperText={amountHelperText}
           />
 
           <DatePicker
@@ -131,7 +128,11 @@ export const AddTransactionDialog = ({
           />
 
           <Stack direction="row" justifyContent="flex-end">
-            <Button variant="contained" onClick={onHandleSubmit}>
+            <Button
+              disabled={isInvalidAmount}
+              variant="contained"
+              onClick={onHandleSubmit}
+            >
               Add
             </Button>
           </Stack>

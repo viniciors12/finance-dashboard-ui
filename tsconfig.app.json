@@ -21,7 +21,9 @@
       "@modules": ["modules/index"],
       "@modules/*": ["modules/*"],
       "@models": ["models/index"],
-      "@models/*": ["models/*"]
+      "@models/*": ["models/*"],
+      "@hooks": ["hooks/index"],
+      "@hooks/*": ["hooks/*"]
     },
 
     /* Linting */
