@@ -15,7 +15,7 @@ export const TransactionsDialogValidations = ({
   form,
   onValueChanged,
 }: transactionsDialogProps) => {
-  const { net } = useBalancesData();
+  const { availableBalance } = useBalancesData();
 
   const categoryOptions = useMemo(() => {
     const selectedCategories = (() => {
@@ -38,12 +38,12 @@ export const TransactionsDialogValidations = ({
   }, [form.type]);
 
   const amountHelperText = useMemo(() => {
-    return ValidAmountText(net);
-  }, [net]);
+    return ValidAmountText(availableBalance);
+  }, [availableBalance]);
 
   const isInvalidAmount = useMemo(() => {
-    return net < (form?.amount ?? 0);
-  }, [net, form.amount]);
+    return availableBalance < (form?.amount ?? 0);
+  }, [availableBalance, form.amount]);
 
   useEffect(() => {
     form.type == TransactionType.Savings

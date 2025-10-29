@@ -14,9 +14,15 @@ export const useBalancesData = () => {
     return calculateExpenses(transactions, TransactionType.Expense);
   }, [transactions]);
 
-  const net = useMemo(() => {
+  const availableBalance = useMemo(() => {
     return income - expenses;
   }, [expenses, income]);
 
-  return { income, expenses, net };
+  const savings = useMemo(() => {
+    return transactions
+      .filter((t) => t.type == TransactionType.Savings)
+      .reduce((sum, tx) => sum + (tx?.amount ?? 0), 0);
+  }, [transactions]);
+
+  return { income, expenses, availableBalance, savings };
 };
