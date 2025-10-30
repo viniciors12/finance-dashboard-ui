@@ -14,15 +14,24 @@ function AppContent() {
   if (loading) {
     return <LoadingBackdrop backdropMessage={loadingMessage} />;
   }
-  return <>{!!user ? <FinanceDashboard /> : <LoginPage />}</>;
+
+  return (
+    <>
+      {!!user ? (
+        <TransactionsProvider>
+          <FinanceDashboard />
+        </TransactionsProvider>
+      ) : (
+        <LoginPage />
+      )}
+    </>
+  );
 }
 
 export default function App() {
   return (
     <AuthProvider>
-      <TransactionsProvider>
-        <AppContent />
-      </TransactionsProvider>
+      <AppContent />
     </AuthProvider>
   );
 }
