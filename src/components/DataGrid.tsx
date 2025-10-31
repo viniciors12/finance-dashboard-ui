@@ -11,6 +11,7 @@ import { useTransactionsContext } from "context/TransactionsContext";
 import { IconButton, Stack, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { expenseDark, incomeDark, savingsDark } from "utils/Colors";
+import { formatNumber } from "utils/BalancesUtils";
 
 // Register the module
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -70,7 +71,8 @@ export const DataGrid = () => {
           return (
             <Stack direction="row" alignItems="center" sx={{ height: "100%" }}>
               <Typography variant="body2" color={getColumnColor(type)}>
-                {isExpense ? "-" : "+"}₡{params.data?.amount}
+                {isExpense ? "-" : "+"}
+                {formatNumber(params.data?.amount ?? 0)}
               </Typography>
             </Stack>
           );

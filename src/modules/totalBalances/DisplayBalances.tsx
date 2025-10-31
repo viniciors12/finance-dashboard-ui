@@ -45,14 +45,14 @@ export const DisplayBalances = ({}) => {
         <BalanceCard
           color={incomeDark}
           icon={incomeIcon}
-          amount={`₡${income}`}
+          amount={income}
           label="Income"
         />
       </Grid>
       <Grid size={{ xs: 12, md: 3 }}>
         <BalanceCard
           icon={expenseIcon}
-          amount={`₡${expenses}`}
+          amount={expenses}
           label="Expenses"
           color={expenseDark}
         />
@@ -60,7 +60,7 @@ export const DisplayBalances = ({}) => {
       <Grid size={{ xs: 12, md: 3 }}>
         <BalanceCard
           icon={availableBalanceIcon}
-          amount={`₡${availableBalance}`}
+          amount={availableBalance}
           label="Available Balance"
           color={availableBalanceDark}
         />
@@ -68,7 +68,7 @@ export const DisplayBalances = ({}) => {
       <Grid size={{ xs: 12, md: 3 }}>
         <BalanceCard
           icon={savingsIcon}
-          amount={`₡${savings}`}
+          amount={savings}
           label="Savings"
           color={savingsDark}
         />

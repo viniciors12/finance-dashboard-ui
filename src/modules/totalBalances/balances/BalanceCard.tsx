@@ -1,7 +1,8 @@
 import { Card, CardContent, Stack, Typography } from "@mui/material";
+import { formatNumber } from "utils/BalancesUtils";
 
 type props = {
-  amount: string;
+  amount: number;
   label: string;
   icon: React.ReactNode;
   color: string;
@@ -23,7 +24,7 @@ export const BalanceCard = ({ amount, label, icon, color }: props) => {
               variant="h5"
               component="div"
             >
-              {amount}
+              {formatNumber(amount)}
             </Typography>
           </Stack>
         </Stack>

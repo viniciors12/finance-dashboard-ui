@@ -21,3 +21,15 @@ export const calculateIncomes = (transactions: Transaction[]): number => {
 export const ValidAmountText = (availableBalance: number) => {
   return `Your current available balance is ₡${availableBalance}`;
 };
+
+export const formatNumber = (value: number): string => {
+  if (value >= 1_000_000)
+    return `₡${truncateDecimal(value / 1_000_000, 1)} mill`;
+  if (value >= 1_000) return `₡${truncateDecimal(value / 1_000, 1)} mil`;
+  return `₡${truncateDecimal(value, 1)}`;
+};
+
+const truncateDecimal = (value: number, decimals: number) => {
+  const factor = Math.pow(10, decimals);
+  return Math.floor(value * factor) / factor;
+};

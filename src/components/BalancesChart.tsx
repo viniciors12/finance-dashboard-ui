@@ -1,6 +1,7 @@
 import type { ChartFilterResponse } from "@models";
 import { Box, Typography } from "@mui/material";
 import { ResponsiveBar, type ComputedDatum } from "@nivo/bar";
+import { formatNumber } from "utils/BalancesUtils";
 import {
   availableBalanceLight,
   expenseLight,
@@ -43,13 +44,16 @@ export const BalancesChart = ({ chartData }: props) => {
     }
   };
   return (
-    <Box style={{ height: 400 }}>
+    <Box minHeight={400} minWidth={400}>
       <ResponsiveBar
         data={chartData as readonly ChartFilterResponse[]}
         keys={["income", "expense", "net", "savings"]}
         indexBy="month"
+        axisLeft={{
+          format: formatNumber,
+        }}
         groupMode="grouped"
-        margin={{ top: 20, right: 50, bottom: 50, left: 40 }}
+        margin={{ top: 20, right: 50, bottom: 50, left: 80 }}
         padding={0.3}
         colors={getBarColor}
         labelSkipWidth={999}
@@ -74,7 +78,7 @@ export const BalancesChart = ({ chartData }: props) => {
               {indexValue}
             </Typography>
             <Typography variant="body2" fontWeight={600} color={color}>
-              {getLabel(id)}: ₡{value}
+              {getLabel(id)}: {formatNumber(value)}
             </Typography>
           </Box>
         )}
