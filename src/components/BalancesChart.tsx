@@ -1,7 +1,12 @@
 import type { ChartFilterResponse } from "@models";
 import { Box, Typography } from "@mui/material";
 import { ResponsiveBar, type ComputedDatum } from "@nivo/bar";
-import { availableBalanceChart, expenseChart, incomeChart } from "utils/Colors";
+import {
+  availableBalanceLight,
+  expenseLight,
+  incomeLight,
+  savingsLight,
+} from "utils/Colors";
 
 type props = {
   chartData: ChartFilterResponse[];
@@ -11,11 +16,13 @@ export const BalancesChart = ({ chartData }: props) => {
   const getBarColor = (datum: ComputedDatum<ChartFilterResponse>) => {
     switch (datum.id) {
       case "income":
-        return incomeChart;
+        return incomeLight;
       case "expense":
-        return expenseChart;
+        return expenseLight;
       case "net":
-        return availableBalanceChart;
+        return availableBalanceLight;
+      case "savings":
+        return savingsLight;
       default:
         return "#757575";
     }
@@ -29,6 +36,8 @@ export const BalancesChart = ({ chartData }: props) => {
         return "Expenses";
       case "net":
         return "Available Balance";
+      case "savings":
+        return "Available Balance";
       default:
         return "";
     }
@@ -37,7 +46,7 @@ export const BalancesChart = ({ chartData }: props) => {
     <Box style={{ height: 400 }}>
       <ResponsiveBar
         data={chartData as readonly ChartFilterResponse[]}
-        keys={["income", "expense", "net"]}
+        keys={["income", "expense", "net", "savings"]}
         indexBy="month"
         groupMode="grouped"
         margin={{ top: 20, right: 50, bottom: 50, left: 40 }}

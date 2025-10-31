@@ -11,6 +11,7 @@ export interface ChartFilterResponse {
   income: number;
   expense: number;
   net: number;
+  savings: number;
   [key: string]: string | number; //chart library asks for a dynamic key
 }
 

@@ -1,10 +1,10 @@
 import { Box, Grid } from "@mui/material";
 import { BalanceCard } from "@modules";
 import {
-  availableBalanceCard,
-  expenseCard,
-  incomeCard,
-  savingsCard,
+  availableBalanceDark,
+  expenseDark,
+  incomeDark,
+  savingsDark,
 } from "utils/Colors";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
@@ -17,25 +17,25 @@ export const DisplayBalances = ({}) => {
 
   const incomeIcon = (
     <Box sx={{ justifyContent: "center", alignContent: "center" }}>
-      <AttachMoneyIcon sx={{ color: incomeCard }} fontSize="large" />
+      <AttachMoneyIcon sx={{ color: incomeDark }} fontSize="large" />
     </Box>
   );
 
   const expenseIcon = (
     <Box sx={{ justifyContent: "center", alignContent: "center" }}>
-      <TrendingDownIcon sx={{ color: expenseCard }} fontSize="large" />
+      <TrendingDownIcon sx={{ color: expenseDark }} fontSize="large" />
     </Box>
   );
 
   const availableBalanceIcon = (
     <Box sx={{ justifyContent: "center", alignContent: "center" }}>
-      <CreditCardIcon sx={{ color: availableBalanceCard }} fontSize="large" />
+      <CreditCardIcon sx={{ color: availableBalanceDark }} fontSize="large" />
     </Box>
   );
 
   const savingsIcon = (
     <Box sx={{ justifyContent: "center", alignContent: "center" }}>
-      <AccountBalanceIcon sx={{ color: savingsCard }} fontSize="large" />
+      <AccountBalanceIcon sx={{ color: savingsDark }} fontSize="large" />
     </Box>
   );
 
@@ -43,7 +43,7 @@ export const DisplayBalances = ({}) => {
     <Grid container spacing={2}>
       <Grid size={{ xs: 12, md: 3 }}>
         <BalanceCard
-          color={incomeCard}
+          color={incomeDark}
           icon={incomeIcon}
           amount={`₡${income}`}
           label="Income"
@@ -54,7 +54,7 @@ export const DisplayBalances = ({}) => {
           icon={expenseIcon}
           amount={`₡${expenses}`}
           label="Expenses"
-          color={expenseCard}
+          color={expenseDark}
         />
       </Grid>
       <Grid size={{ xs: 12, md: 3 }}>
@@ -62,7 +62,7 @@ export const DisplayBalances = ({}) => {
           icon={availableBalanceIcon}
           amount={`₡${availableBalance}`}
           label="Available Balance"
-          color={availableBalanceCard}
+          color={availableBalanceDark}
         />
       </Grid>
       <Grid size={{ xs: 12, md: 3 }}>
@@ -70,7 +70,7 @@ export const DisplayBalances = ({}) => {
           icon={savingsIcon}
           amount={`₡${savings}`}
           label="Savings"
-          color={savingsCard}
+          color={savingsDark}
         />
       </Grid>
     </Grid>

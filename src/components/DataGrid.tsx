@@ -10,6 +10,7 @@ import {
 import { useTransactionsContext } from "context/TransactionsContext";
 import { IconButton, Stack, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { expenseDark, incomeDark, savingsDark } from "utils/Colors";
 
 // Register the module
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -18,6 +19,19 @@ export const DataGrid = () => {
   const { transactions, onDeleteTransaction, fetchFilteredTransactions } =
     useTransactionsContext();
   const gridRef = useRef<GridApi | null>(null);
+
+  const getColumnColor = (type: TransactionType | undefined): string => {
+    switch (type) {
+      case TransactionType.Expense:
+        return expenseDark;
+      case TransactionType.Income:
+        return incomeDark;
+      case TransactionType.Savings:
+        return savingsDark;
+      default:
+        return "";
+    }
+  };
 
   const columnDefs = useMemo<ColDef<Transaction>[]>(
     () => [
@@ -52,14 +66,11 @@ export const DataGrid = () => {
         field: "amount",
         cellRenderer: (params: CustomCellRendererProps<Transaction>) => {
           const type = params.data?.type;
-          const isIncome = TransactionType.Income == type;
+          const isExpense = TransactionType.Expense == type;
           return (
             <Stack direction="row" alignItems="center" sx={{ height: "100%" }}>
-              <Typography
-                variant="body2"
-                color={isIncome ? "#2e7d32" : "#c62828"}
-              >
-                {isIncome ? "" : "-"}₡{params.data?.amount}
+              <Typography variant="body2" color={getColumnColor(type)}>
+                {isExpense ? "-" : "+"}₡{params.data?.amount}
               </Typography>
             </Stack>
           );
