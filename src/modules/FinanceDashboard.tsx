@@ -18,10 +18,10 @@ export const FinanceDashboard = () => {
   const [transactionDialogOpen, setTransactionDialogOpen] =
     useState<boolean>(false);
   const { logout } = useAuthContext();
-  const { transactions } = useTransactionsContext();
+  const { loading } = useTransactionsContext();
   const loadingMessage = useMemo(() => {
-    return !transactions.length ? "Loading dashboard" : undefined;
-  }, [transactions]);
+    return loading ? "Loading dashboard" : undefined;
+  }, [loading]);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box sx={{ minHeight: "100vh", backgroundColor: "#f5f7fa", padding: 2 }}>

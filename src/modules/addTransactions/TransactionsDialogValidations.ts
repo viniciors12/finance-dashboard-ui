@@ -38,12 +38,17 @@ export const TransactionsDialogValidations = ({
   }, [form.type]);
 
   const amountHelperText = useMemo(() => {
-    return ValidAmountText(availableBalance);
-  }, [availableBalance]);
+    return form.type !== TransactionType.Income
+      ? ValidAmountText(availableBalance)
+      : undefined;
+  }, [availableBalance, form.type]);
 
   const isInvalidAmount = useMemo(() => {
-    return availableBalance < (form?.amount ?? 0);
-  }, [availableBalance, form.amount]);
+    return (
+      form.type !== TransactionType.Income &&
+      availableBalance < (form?.amount ?? 0)
+    );
+  }, [availableBalance, form.amount, form.type]);
 
   useEffect(() => {
     form.type == TransactionType.Savings

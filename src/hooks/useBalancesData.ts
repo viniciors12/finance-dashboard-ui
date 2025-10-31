@@ -7,11 +7,11 @@ export const useBalancesData = () => {
   const { transactions } = useTransactionsContext();
 
   const income = useMemo(() => {
-    return calculateIncomes(transactions, TransactionType.Income);
+    return calculateIncomes(transactions);
   }, [transactions]);
 
   const expenses = useMemo(() => {
-    return calculateExpenses(transactions, TransactionType.Expense);
+    return calculateExpenses(transactions);
   }, [transactions]);
 
   const availableBalance = useMemo(() => {
